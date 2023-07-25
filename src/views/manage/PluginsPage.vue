@@ -44,27 +44,28 @@ import { javascript } from '@codemirror/lang-javascript';
 import { oneDark } from '@codemirror/theme-one-dark'
 import { getPluginInfo, getPluginFile } from '@/http/index';
 import { ElMessage } from 'element-plus';
+import { PluginInfoType } from '@/func';
 
-const pluginData = ref<[] | false>(false), code = ref<string>(''),
+const pluginData = ref<PluginInfoType[] | false>(false), code = ref<string>(''),
     dialogViewCode = ref<boolean>(false), dialogViewCodeState = ref<boolean>(true);
 const extensions = [javascript(), oneDark];
 
 getPluginInfo().then(res => {
-    pluginData.value = <[]>res.data.data;
+    pluginData.value = res.data.data;
 });
 
 
 const viewCode = async (index: number) => {
     dialogViewCode.value = dialogViewCodeState.value = true;
     code.value = ''
-    let pluginId = (<{ name: string }[]>pluginData.value)[index].name;
+    let pluginId = (<PluginInfoType[]>pluginData.value)[index].name;
     pluginId = pluginId.includes('.ts') ? pluginId : `${pluginId}/index.ts`;
     code.value = (<{ content: string }>(await getPluginFile(pluginId)).data.data).content;
     dialogViewCodeState.value = false;
 }
 
 const viewConfig = async (index: number) => {
-    let pluginId = (<{ name: string }[]>pluginData.value)[index].name;
+    let pluginId = (<PluginInfoType[]>pluginData.value)[index].name;
     code.value = ''
     if (!pluginId.includes('.ts')) {
         pluginId = `${pluginId}/config.ts`;

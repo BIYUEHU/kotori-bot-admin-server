@@ -18,6 +18,6 @@ import { getDataConfig } from '@/http';
 
 const content = ref<string>(''), extensions = [json(), oneDark];
 getDataConfig().then(res => {
-    content.value = (<{ content: string }>res.data.data).content;
+    content.value = res.data.data.content;
 })
 </script>

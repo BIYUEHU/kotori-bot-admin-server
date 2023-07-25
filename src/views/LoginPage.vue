@@ -70,7 +70,7 @@ const handleLogin = async () => {
     
     const result = await postLogin(form.user, form.password);
     if (result.data.code === 500) {
-        useMainStore().token = (<{token: string}>result.data.data).token;
+        useMainStore().token = result.data.data.token;
         ElMessage.success('登录成功，跳转中...');
         isLoading.value = false;
         router.push('/index');
