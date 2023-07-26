@@ -44,16 +44,11 @@
 import { reactive, ref } from 'vue';
 import { ElMessage } from 'element-plus';
 import router from '@/router';
-import { getDataBot, postLogin } from '@/http';
+import { postLogin } from '@/http';
 import { useMainStore } from '@/store';
+import { verifyToken } from '@/func';
 
-(async () => {
-    const result = (await getDataBot());
-    if (result.data.code === 500) {
-        router.push('/index');
-        return;
-    };
-})();
+verifyToken();
 
 const dialogForget = ref<boolean>(false), dialogInput = ref<boolean>(false), isLoading = ref<boolean>(false);
 const form = reactive({
@@ -67,7 +62,7 @@ const handleLogin = async () => {
         dialogInput.value = true;
         return;
     }
-    
+
     const result = await postLogin(form.user, form.password);
     if (result.data.code === 500) {
         useMainStore().token = result.data.data.token;

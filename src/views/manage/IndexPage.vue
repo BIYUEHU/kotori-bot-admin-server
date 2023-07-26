@@ -97,7 +97,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { getData, getDataBot, getDataServer } from '@/http';
-import { DataBotType, DataEnvType, DataKotoriType, DataServerType, timestampToTime } from '@/func';
+import { DataBotType, DataEnvType, DataKotoriType, DataServerType, timestampToTime, viewState } from '@/func';
 import config from '@/../public/config.js';
 import { useMainStore } from '@/store';
 
@@ -126,11 +126,4 @@ setInterval(async () => {
     if (store.temp.dataServer == dataServer.value) store.temp.dataServer = JSON.parse(JSON.stringify(dataServer.value));
     dataServer.value = (await getDataServer()).data.data;
 }, config.app.updatetime);
-
-const viewState = (num: number, lastnum: number, viewcontent?: string | number): string => {
-    viewcontent = viewcontent ?? num;
-    if (num > lastnum) return `<span style="color:lightgreen">↑${viewcontent}</span>`;
-    if (num < lastnum) return `<span style="color:red">↓${viewcontent}</span>`;
-    return `<span style="color:purple">${viewcontent}</span>`;
-}
 </script>

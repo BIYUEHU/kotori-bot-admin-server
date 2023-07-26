@@ -2,7 +2,8 @@ import axios from 'axios';
 import { ApiType, DataBotType, DataEnvType, DataKotoriType, DataServerType, DataConfigType, PluginInfoType, PluginFileType, LogViewType, PostLoginType, HttpDataType } from '@/func';
 import config from '@/../public/config.js'
 
-const URL = `http://${config.host}:${config.port}/api/`;
+const HOST = config.host ? config.host : 'localhost';
+const URL = config.port ? `http://${HOST}:${config.port}/api/` : '/api/';
 
 const getToken = (): string => {
     return localStorage.getItem('main') ? (JSON.parse(<string>localStorage.getItem('main')).token) : '';

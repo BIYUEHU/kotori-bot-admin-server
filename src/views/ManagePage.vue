@@ -11,11 +11,9 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { useMainStore } from '@/store';
-import router from '@/router';
-import { getDataBot } from '@/http';
-import { ElMessage } from 'element-plus';
 import HeaderCom from '@/components/HeaderCom.vue';
 import AsideCom from '@/components/AsideCom.vue';
+import { verifyToken } from '@/func';
 
 const store = useMainStore();
 const screenWidthType = document.body.clientWidth > 630;
@@ -30,15 +28,5 @@ const asideWidth = computed(() => {
 });
 
 /* token验证 */
-(async () => {
-    try {
-        const result = (await getDataBot());
-        if (result.data.code !== 500) {
-            router.push('/login');
-            return;
-        };
-    } catch {
-        ElMessage.error('后端配置错误！');
-    }
-})();
+verifyToken();
 </script>
